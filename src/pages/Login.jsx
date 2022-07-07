@@ -1,16 +1,33 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../lib/firebase';
 import Button from '../components/Button';
 import Input from '../components/Input';
+import ErrorBox from '../components/ErrorBox';
+import Spinner from '../components/Spinner';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(email);
-    console.log(password);
+
+    setLoading(true);
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      setLoading(false);
+      navigate('/');
+    } catch (error) {
+      setLoading(false);
+      setError(error.message);
+    }
   };
 
   return (
@@ -20,6 +37,8 @@ const Login = () => {
         className="flex flex-col items-center gap-6 w-11/12 max-w-md"
       >
         <h2 className="font-extrabold text-2xl">Welcome back</h2>
+
+        {error && <ErrorBox message={error} />}
 
         <Input
           id="email"
@@ -42,7 +61,14 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <Button type="submit">Login</Button>
+        <Button type="submit">
+          Login{' '}
+          {loading && (
+            <span>
+              <Spinner />
+            </span>
+          )}
+        </Button>
 
         <Link to="/register" className="text-blue-500 underline">
           Create a new account
