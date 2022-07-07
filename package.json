@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently -p \"time\" -t \"HH:mm:ss\" -c \"yellow,green\" \"firebase emulators:start\" \"vite\"",
     "build": "vite build",
     "preview": "vite preview"
   },
@@ -20,6 +20,7 @@
     "@types/react-dom": "^18.0.6",
     "@vitejs/plugin-react": "^1.3.2",
     "autoprefixer": "^10.4.7",
+    "concurrently": "^7.2.2",
     "postcss": "^8.4.14",
     "tailwindcss": "^3.1.4",
     "vite": "^2.9.13"
