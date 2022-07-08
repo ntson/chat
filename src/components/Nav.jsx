@@ -24,7 +24,7 @@ const Nav = () => {
       </ConditionalShow>
 
       <ConditionalShow show={!loading && !!user}>
-        <span className="text-gray-50">{user && user.email}</span>
+        <span className="text-gray-50">{user && user.displayName}</span>
 
         <button
           onClick={logout}

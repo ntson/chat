@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 import Button from '../components/Button';
 import Input from '../components/Input';
@@ -10,6 +10,7 @@ import ErrorBox from '../components/ErrorBox';
 const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [displayName, setDisplayName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -22,6 +23,9 @@ const Register = () => {
 
     try {
       await createUserWithEmailAndPassword(auth, email, password);
+
+      await updateProfile(auth.currentUser, { displayName });
+
       setLoading(false);
       navigate('/');
     } catch (error) {
@@ -39,6 +43,16 @@ const Register = () => {
         <h2 className="font-extrabold text-2xl">Create an account</h2>
 
         {error && <ErrorBox message={error} />}
+
+        <Input
+          id="display-name"
+          label="Display Name"
+          type="text"
+          name="displayName"
+          required
+          value={displayName}
+          onChange={(e) => setDisplayName(e.target.value)}
+        />
 
         <Input
           id="email"
