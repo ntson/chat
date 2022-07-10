@@ -65,7 +65,7 @@ const Login = () => {
           Login{' '}
           {loading && (
             <span>
-              <Spinner />
+              <Spinner text="white" />
             </span>
           )}
         </Button>

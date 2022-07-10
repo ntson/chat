@@ -79,7 +79,7 @@ const Register = () => {
           Create an account{' '}
           {loading && (
             <span>
-              <Spinner />
+              <Spinner text="white" />
             </span>
           )}
         </Button>
